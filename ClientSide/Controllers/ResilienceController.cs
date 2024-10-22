@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Polly;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,6 +9,20 @@ namespace ClientSide.Controllers
     [ApiController]
     public class ResilienceController : ControllerBase
     {
+        [HttpGet("ping")]
+        public string Ping()
+        {
+            return "Pong";
+        }
+
+        [HttpGet]
+        public string PingHedging()
+        {
+            
+            return "Pong";
+        }
+
+
         // GET: api/<ResilienceController>
         [HttpGet]
         public IEnumerable<string> Get()
