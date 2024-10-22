@@ -25,8 +25,8 @@ namespace ClientSide
             // Latency Mode Hedging: Requests are on the same httpclient
             // [Request A]----------------------------------->
             //            <---3s--->[Request B]-------------->
-            builder.Services.AddHttpClient("leafLayerHedging").AddResilienceHandler(
-                pipelineName: "leafLayerHedgingHandler",
+            builder.Services.AddHttpClient("hedgingOnSameHttpClient").AddResilienceHandler(
+                pipelineName: "hedgingOnSameHttpClient",
                 configure: builder =>
                 {
                     // Polly Hedging Strategy: Latency Mode
@@ -38,6 +38,16 @@ namespace ClientSide
                         Delay = TimeSpan.FromSeconds(3),
                     });
                 });
+
+            builder.Services.AddResiliencePipeline<string, HttpResponseMessage>(
+               "HedgingOverHedging" , builder =>
+            {
+                builder.AddHedging(new HedgingStrategyOptions<HttpResponseMessage>
+                {
+                    MaxHedgedAttempts = 3,
+                    Delay = TimeSpan.FromSeconds(3)
+                });
+            });
 
             // Add Named HttpClient
             // Latency Mode Hedging with Hedging
