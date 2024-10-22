@@ -30,22 +30,16 @@ namespace ClientSide.Controllers
         [HttpGet]
         public string PingHedging()
         {
-            // Retrieve a ResiliencePipelineProvider that dynamically creates and caches the resilience pipelines
-            var pipelineProvider = serviceProvider.GetRequiredService<ResiliencePipelineProvider<string>>();
+            //// Retrieve a ResiliencePipelineProvider that dynamically creates and caches the resilience pipelines
+            //var pipelineProvider = serviceProvider.GetRequiredService<ResiliencePipelineProvider<string>>();
 
-            // Retrieve your resilience pipeline using the name it was registered with
-            ResiliencePipeline pipeline = pipelineProvider.GetPipeline("my-pipeline");
+            //// Retrieve your resilience pipeline using the name it was registered with
+            //ResiliencePipeline pipeline = pipelineProvider.GetPipeline("my-pipeline");
 
-            // Alternatively, you can use keyed services to retrieve the resilience pipeline
-            pipeline = serviceProvider.GetRequiredKeyedService<ResiliencePipeline>("my-pipeline");
+            //// Alternatively, you can use keyed services to retrieve the resilience pipeline
+            //pipeline = serviceProvider.GetRequiredKeyedService<ResiliencePipeline>("my-pipeline");
 
-            // Execute the pipeline
-            await pipeline.ExecuteAsync(static async token =>
-            {
-                // Your custom logic goes here
-            });
-
-            HttpClient httpClient = this.httpClientFactory.CreateClient("hedgingOnSameHttpClient");
+            //HttpClient httpClient = this.httpClientFactory.CreateClient("hedgingOnSameHttpClient");
             
             return "Pong";
         }

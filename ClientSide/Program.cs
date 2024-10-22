@@ -40,12 +40,22 @@ namespace ClientSide
                 });
 
             builder.Services.AddResiliencePipeline<string, HttpResponseMessage>(
-               "HedgingOverHedging" , builder =>
+               "hedgingOverHedging", builder =>
             {
                 builder.AddHedging(new HedgingStrategyOptions<HttpResponseMessage>
                 {
                     MaxHedgedAttempts = 3,
-                    Delay = TimeSpan.FromSeconds(3)
+                    DelayGenerator = args =>
+                    {
+                        var delay = args.AttemptNumber switch
+                        {
+                            1 => TimeSpan.FromSeconds(0.5),
+                            2 => TimeSpan.FromSeconds(5),
+                            _ => TimeSpan.FromSeconds(-1) // switch to Fallback mode
+                        };
+
+                        return new ValueTask<TimeSpan>(delay);
+                    }
                 });
             });
 
